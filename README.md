@@ -11,12 +11,19 @@ Objectives/Features:
 The app will have a faculty login page
 The faculty then gets to pick an algorithm that he/she is going to teach/demonstrate in that class from the list of algorithms that is there for that semester.
 The chosen algorithm for the class will display the step-by-step process of that algorithm,like
+
 Step 1: Take an input of n
+
 Step 2: Write the base condition for the function
+
 Step 3: Call the function recursively with such parameters and so on…
+
 The faculty could give any input with respect to the algorithm he/she have chosen for the day
+
 The app will be able to demonstrate any custom input w.r.t the algorithm
+
 The user will have the option to fast forward the iterations.
+
 At the side of the page there will be some space to display the TIme/Space Complexities, their calculations, Insights(like who developed that algorithms and some more history about the respective algorithm)
 	For eg. Binary Search:
 The User is allowed to take any input array for any n number of elements and a target element.
