@@ -56,7 +56,8 @@
         border-bottom: 1px solid var(--border);
         padding: 1rem 2rem;
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
+        gap: 1rem;
         align-items: center;
         z-index: 1000;
         backdrop-filter: blur(10px);
@@ -83,8 +84,9 @@
 
       .nav-controls {
         display: flex;
-        gap: 1.5rem;
+        gap: 1rem;
         align-items: center;
+        margin-left: auto;
       }
 
       .theme-toggle {
@@ -172,7 +174,7 @@
         margin-bottom: 2rem;
       }
 
-      .cta-buttons {
+      /* .cta-buttons {
         display: flex;
         gap: 1rem;
         justify-content: center;
@@ -188,9 +190,9 @@
         cursor: pointer;
         transition: all 0.3s ease;
         border: none;
-      }
+      } */
 
-      .btn-primary {
+      /* .btn-primary {
         background: var(--primary-blue);
         color: white;
       }
@@ -210,23 +212,42 @@
       .btn-secondary:hover {
         background: var(--primary-light);
         transform: translateY(-3px);
+      } */
+
+      .topics-section {
+        padding: 4rem 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
       }
 
       .carousel-section {
-        padding: 2rem 0;
+        margin-bottom: 1.5rem;
         overflow: hidden;
         position: relative;
       }
 
       .carousel-row {
         display: flex;
-        gap: 2rem;
-        animation: scrollRight 40s linear infinite;
+        gap: 1.5rem;
+        animation: scrollRight 50s linear infinite;
         width: fit-content;
+        padding: 1rem 0;
       }
 
       .carousel-row.reverse {
-        animation: scrollLeft 40s linear infinite;
+        animation: scrollLeft 50s linear infinite;
       }
 
       .carousel-row:hover {
@@ -251,12 +272,12 @@
         }
       }
 
-      .algorithm-card {
-        min-width: 300px;
-        height: 200px;
+      .ds-card {
+        min-width: 250px;
+        height: 120px;
         background: var(--surface);
         border-radius: 16px;
-        padding: 2rem;
+        padding: 1.5rem;
         border: 2px solid var(--border);
         display: flex;
         flex-direction: column;
@@ -265,6 +286,62 @@
         transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
+        cursor: pointer;
+      }
+
+      .ds-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          var(--primary-blue),
+          var(--accent-purple)
+        );
+      }
+
+      .ds-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--primary-blue);
+        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.2);
+      }
+
+      .ds-card .icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .ds-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        text-align: center;
+      }
+
+      .ds-card p {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        text-align: center;
+        line-height: 1.4;
+      }
+
+      .algorithm-card {
+        min-width: 250px;
+        height: 80px;
+        background: var(--surface);
+        border-radius: 16px;
+        padding: 1.5rem;
+        border: 2px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
       }
 
       .algorithm-card::before {
@@ -288,19 +365,21 @@
       }
 
       .algorithm-card .icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
       }
 
       .algorithm-card h3 {
-        font-size: 1.25rem;
+        font-size: 1rem;
         margin-bottom: 0.5rem;
+        text-align: center;
       }
 
       .algorithm-card p {
         color: var(--text-secondary);
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         text-align: center;
+        line-height: 1.4;
       }
 
       .fade-edges {
@@ -402,16 +481,98 @@
         line-height: 1.6;
       }
 
-      footer {
-        background: var(--surface);
-        border-top: 1px solid var(--border);
-        padding: 2rem;
-        text-align: center;
-        margin-top: 4rem;
+      /* ===== MODERN FOOTER ===== */
+
+      .site-footer {
+        background: linear-gradient(135deg, #0f172a, #020617);
+        color: #cbd5f5;
+        padding: 4rem 2rem 2rem;
       }
 
-      footer p {
-        color: var(--text-secondary);
+      .footer-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1.2fr 2fr;
+        gap: 4rem;
+      }
+
+      /* Brand section */
+      .footer-brand h2 {
+        font-size: 1.8rem;
+        background: linear-gradient(135deg, #60a5fa, #a78bfa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+      }
+
+      .footer-brand p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: #94a3b8;
+        max-width: 420px;
+      }
+
+      .footer-socials {
+        margin-top: 1.5rem;
+        display: flex;
+        gap: 1rem;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+
+      /* Link columns */
+      .footer-links {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+      }
+
+      .footer-links h4 {
+        color: #e2e8f0;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+      }
+
+      .footer-links a {
+        display: block;
+        color: #94a3b8;
+        text-decoration: none;
+        margin-bottom: 0.6rem;
+        font-size: 0.9rem;
+        transition: color 0.2s ease;
+      }
+
+      .footer-links a:hover {
+        color: #60a5fa;
+      }
+
+      /* Bottom bar */
+      .footer-bottom {
+        border-top: 1px solid #1e293b;
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        text-align: center;
+        font-size: 0.85rem;
+        color: #64748b;
+      }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        .footer-container {
+          grid-template-columns: 1fr;
+          gap: 3rem;
+        }
+
+        .footer-links {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 600px) {
+        .footer-links {
+          grid-template-columns: 1fr;
+        }
       }
 
       @media (max-width: 768px) {
@@ -518,7 +679,7 @@
         line-height: 1.4;
       }
 
-      /* Card 1 - Binary Search (Blue) */
+      /* Card 1 - Upcoming Updates (Blue) */
       .stack-card:nth-child(1) {
         background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
         left: 50%;
@@ -527,38 +688,38 @@
         z-index: 1;
       }
 
-      /* Card 2 - Dynamic Programming (Gray/Center) */
+      /* Card 2 - What's New (Gray/Center) */
       .stack-card:nth-child(2) {
         background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        z-index: 2;
+        z-index: 3;
       }
 
-      /* Card 3 - Graph Algorithms (Red) */
+      /* Card 3 - Creators (Red) */
       .stack-card:nth-child(3) {
         background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%) rotate(8deg);
-        z-index: 3;
+        z-index: 2;
       }
 
       /* Hover effect - expand cards */
       .card-stack:hover .stack-card:nth-child(1) {
-        transform: translate(-160%, -50%) rotate(-5deg);
-        z-index: 3;
+        transform: translate(-180%, -50%) rotate(-5deg);
+        z-index: 1;
       }
 
       .card-stack:hover .stack-card:nth-child(2) {
-        transform: translate(-67%, -50%) rotate(0deg);
+        transform: translate(-85%, -50%) rotate(0deg);
         z-index: 2;
       }
 
       .card-stack:hover .stack-card:nth-child(3) {
         transform: translate(10%, -50%) rotate(5deg);
-        z-index: 3;
+        z-index: 1;
       }
 
       .card-stack:hover .stack-card {
@@ -581,11 +742,247 @@
           transform: scale(0.8);
         }
       }
+
+      /* ===== SIMPLE W3-STYLE NAVBAR ===== */
+
+      /* Visualize dropdown */
+      .visualize-toggle {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-left: 0.5rem;
+        cursor: pointer;
+        color: var(--text-primary);
+      }
+
+      .visualize-toggle:hover {
+        color: var(--primary-blue);
+      }
+
+      /* Search bar */
+      .search-box {
+        display: flex;
+        align-items: center;
+        margin-left: 0.25rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 0.4rem 0.75rem;
+        gap: 0.5rem;
+      }
+
+      .search-box input {
+        border: none;
+        outline: none;
+        background: transparent;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+        width: 200px;
+      }
+
+      .search-icon {
+        font-size: 1rem;
+        opacity: 1;
+      }
+
+      .hero-subtitle {
+        font-size: 1.15rem;
+        color: var(--text-secondary);
+        margin-bottom: 2.5rem;
+        line-height: 1.6;
+        max-width: 600px;
+      }
+
+      .hero-punch {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--accent-orange);
+        margin-bottom: 2rem;
+        font-style: italic;
+      }
+
+      .hero-features {
+        list-style: none;
+        margin-bottom: 2rem;
+        text-align: left;
+        max-width: 500px;
+      }
+
+      .hero-features li {
+        color: var(--text-secondary);
+        margin-bottom: 0.75rem;
+        padding-left: 2rem;
+        position: relative;
+        font-size: 1rem;
+      }
+
+      .hero-features li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: var(--accent-green);
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      .trust-strip {
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+        background: rgba(37, 99, 235, 0.1);
+        padding: 0.75rem 1.5rem;
+        border-radius: 50px;
+        margin-bottom: 2rem;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        border: 1px solid var(--border);
+      }
+
+      .trust-strip span {
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+
+      .stats-strip {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        margin-top: 3rem;
+        flex-wrap: wrap;
+      }
+
+      .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+      }
+
+      .stat-icon {
+        font-size: 1.5rem;
+      }
+
+      .stat-item strong {
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+
+      @media (max-width: 768px) {
+        .hero-punch {
+          font-size: 1.2rem;
+        }
+
+        .stats-strip {
+          gap: 1rem;
+        }
+
+        .stat-item {
+          font-size: 0.85rem;
+        }
+      }
+
+      /* Updated Stack Cards Content Styles */
+      .stack-card-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: white;
+      }
+
+      .stack-card-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+      }
+
+      .stack-card-list li {
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+        opacity: 0.95;
+        padding-left: 1.5rem;
+        position: relative;
+      }
+
+      .stack-card-list.upcoming li::before {
+        content: "🔜";
+        position: absolute;
+        left: 0;
+      }
+
+      .stack-card-list.new li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #34d399;
+        font-weight: bold;
+      }
+
+      .creators-grid {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        margin-top: 1.5rem;
+      }
+
+      .creator-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .creator-photo {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .creator-name {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: white;
+      }
+
+      /* .creator-links {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+      }
+
+      .creator-links a {
+        color: white;
+        text-decoration: none;
+        font-size: 0.85rem;
+        opacity: 0.9;
+        transition: opacity 0.3s ease;
+      }
+
+      .creator-links a:hover {
+        opacity: 1;
+        text-decoration: underline; */
+      }
     </style>
   </head>
   <body>
     <nav class="navbar">
       <div class="logo">DSA Visualiser</div>
+
+      <!-- Visualize Toggle -->
+      <div class="visualize-toggle">Visualize ▾</div>
+
+      <!-- Search Bar -->
+      <div class="search-box">
+        <input type="text" placeholder="Search algorithms..." />
+        <span class="search-icon">🔍</span>
+      </div>
+
       <div class="nav-controls">
         <button class="theme-toggle" id="themeToggle">🌙</button>
         <div class="auth-buttons">
@@ -599,46 +996,95 @@
       <div class="hero-container">
         <div class="hero-content">
           <h1>Master Algorithms Visually</h1>
-          <p>
-            An interactive platform for teachers and students to learn Data
-            Structures & Algorithms through step-by-step visual demonstrations
-          </p>
-          <div class="cta-buttons">
+
+          <ul class="hero-features">
+            <li>Visualize how algorithms work internally</li>
+            <li>Control execution step by step</li>
+            <li>Understand time & space complexity intuitively</li>
+          </ul>
+
+          <p class="hero-punch">"Algorithms finally make sense."</p>
+
+          <div class="trust-strip">
+            Perfect for <span>classroom teaching</span> • <span>exams</span> •
+            <span>interviews</span>
+          </div>
+
+          <!-- <div class="cta-buttons">
             <button class="btn-primary">Get Started</button>
             <button class="btn-secondary">View Demo</button>
+          </div> -->
+
+          <div class="stats-strip">
+            <div class="stat-item">
+              <span><strong>30+</strong> Algorithms</span>
+            </div>
+            <div class="stat-item">
+              <span><strong>Step-by-step</strong> Playback</span>
+            </div>
+            <div class="stat-item">
+              <span><strong>Real-time</strong> Controls</span>
+            </div>
           </div>
         </div>
 
         <div class="card-stack-container">
           <div class="card-stack">
+            <!-- Card 1: Upcoming Updates (Blue) -->
             <div class="stack-card">
-              <div class="card-icon">🔍</div>
+              <!-- <div class="card-icon">❓</div> -->
               <div class="card-content">
-                <h3>Binary Search</h3>
-                <p>
-                  Efficiently search sorted arrays by repeatedly dividing the
-                  search space in half
-                </p>
+                <h3 class="stack-card-title">Upcoming Updates</h3>
+                <ul class="stack-card-list upcoming">
+                  <li>More algorithms & data structures</li>
+                  <li>Interactive speed & step controls</li>
+                  <li>Visual time & space complexity</li>
+                  <li>Personalized learning profiles</li>
+                </ul>
               </div>
             </div>
+
+            <!-- Card 2: What's New (Gray) -->
             <div class="stack-card">
-              <div class="card-icon">🎯</div>
+              <!-- <div class="card-icon">❓</div> -->
               <div class="card-content">
-                <h3>Dynamic Programming</h3>
-                <p>
-                  Break complex problems into simpler subproblems and store
-                  solutions for reuse
-                </p>
+                <h3 class="stack-card-title">What's New</h3>
+                <ul class="stack-card-list new">
+                  <li>Redesigned landing experience</li>
+                  <li>Interactive algorithm cards</li>
+                  <li>Dark mode support</li>
+                  <li>Responsive layout improvements</li>
+                </ul>
               </div>
             </div>
+
+            <!-- Card 3: Creators (Red) -->
             <div class="stack-card">
-              <div class="card-icon">🗺️</div>
+              <!-- <div class="card-icon">❓</div> -->
               <div class="card-content">
-                <h3>Graph Algorithms</h3>
-                <p>
-                  Explore and traverse networks finding shortest paths and
-                  connections
-                </p>
+                <h3 class="stack-card-title">Creators</h3>
+                <div class="creators-grid">
+                  <div class="creator-item">
+                    <div class="creator-photo">👤</div>
+                    <div class="creator-name">Hermon DP</div>
+                  </div>
+                  <div class="creator-item">
+                    <div class="creator-photo">👤</div>
+                    <div class="creator-name">ShreePriya</div>
+                  </div>
+                  <div class="creator-item">
+                    <div class="creator-photo">👤</div>
+                    <div class="creator-name">Anusha Thakur</div>
+                  </div>
+                </div>
+                <!-- <div
+                  class="creator-links"
+                  style="justify-content: center; margin-top: 1rem"
+                >
+                  <a href="#" target="_blank">LinkedIn</a>
+                  <span style="color: white">|</span>
+                  <a href="#" target="_blank">GitHub</a>
+                </div> -->
               </div>
             </div>
           </div>
@@ -646,95 +1092,287 @@
       </div>
     </section>
 
-    <div class="carousel-section fade-edges">
-      <div class="carousel-row" id="row1">
-        <div class="algorithm-card">
-          <div class="icon">🔍</div>
-          <h3>Binary Search</h3>
-          <p>Efficiently find elements in sorted arrays</p>
-        </div>
-        <div class="algorithm-card">
-          <div class="icon">🔄</div>
-          <h3>Quick Sort</h3>
-          <p>Fast divide-and-conquer sorting</p>
-        </div>
-        <div class="algorithm-card">
-          <div class="icon">🌳</div>
-          <h3>Tree Traversal</h3>
-          <p>Navigate tree structures systematically</p>
-        </div>
-        <div class="algorithm-card">
-          <div class="icon">📊</div>
-          <h3>Merge Sort</h3>
-          <p>Stable sorting with guaranteed performance</p>
-        </div>
-        <div class="algorithm-card">
-          <div class="icon">🎯</div>
-          <h3>Dynamic Programming</h3>
-          <p>Optimize recursive solutions</p>
-        </div>
-        <div class="algorithm-card">
-          <div class="icon">🔍</div>
-          <h3>Binary Search</h3>
-          <p>Efficiently find elements in sorted arrays</p>
-        </div>
-        <div class="algorithm-card">
-          <div class="icon">🔄</div>
-          <h3>Quick Sort</h3>
-          <p>Fast divide-and-conquer sorting</p>
-        </div>
-        <div class="algorithm-card">
-          <div class="icon">🌳</div>
-          <h3>Tree Traversal</h3>
-          <p>Navigate tree structures systematically</p>
-        </div>
+    <section class="topics-section">
+      <!-- DATA STRUCTURES SECTION -->
+      <div class="section-header">
+        <h2 class="section-title">DATA STRUCTURES</h2>
       </div>
-    </div>
 
-    <div class="carousel-section fade-edges">
-      <div class="carousel-row reverse" id="row2">
-        <div class="algorithm-card">
-          <div class="icon">🗺️</div>
-          <h3>Graph Algorithms</h3>
-          <p>Explore paths and connections</p>
-        </div>
-        <div class="algorithm-card">
-          <div class="icon">🔢</div>
-          <h3>Hash Tables</h3>
-          <p>Fast data retrieval and storage</p>
-        </div>
-        <div class="algorithm-card">
-          <div class="icon">⚡</div>
-          <h3>Recursion</h3>
-          <p>Solve problems elegantly</p>
-        </div>
-        <div class="algorithm-card">
-          <div class="icon">📚</div>
-          <h3>Stack & Queue</h3>
-          <p>Fundamental data structures</p>
-        </div>
-        <div class="algorithm-card">
-          <div class="icon">🔗</div>
-          <h3>Linked Lists</h3>
-          <p>Dynamic data organization</p>
-        </div>
-        <div class="algorithm-card">
-          <div class="icon">🗺️</div>
-          <h3>Graph Algorithms</h3>
-          <p>Explore paths and connections</p>
-        </div>
-        <div class="algorithm-card">
-          <div class="icon">🔢</div>
-          <h3>Hash Tables</h3>
-          <p>Fast data retrieval and storage</p>
-        </div>
-        <div class="algorithm-card">
-          <div class="icon">⚡</div>
-          <h3>Recursion</h3>
-          <p>Solve problems elegantly</p>
+      <div class="carousel-section fade-edges">
+        <div class="carousel-row">
+          <!-- Linear Data Structures -->
+          <div class="ds-card">
+            <h3>Array</h3>
+            <p>Fixed-size, index-based storage</p>
+          </div>
+          <div class="ds-card">
+            <h3>Linked List</h3>
+            <p>Nodes connected using pointers</p>
+          </div>
+          <div class="ds-card">
+            <h3>Stack</h3>
+            <p>LIFO (Last In, First Out)</p>
+          </div>
+          <div class="ds-card">
+            <h3>Queue</h3>
+            <p>FIFO (First In, First Out)</p>
+          </div>
+          <div class="ds-card">
+            <h3>Circular Queue</h3>
+            <p>Circular implementation of queue</p>
+          </div>
+          <div class="ds-card">
+            <h3>Deque</h3>
+            <p>Double Ended Queue</p>
+          </div>
+          <div class="ds-card">
+            <h3>Priority Queue</h3>
+            <p>Elements with priority ordering</p>
+          </div>
+          <!-- Duplicate for seamless scroll -->
+          <div class="ds-card">
+            <h3>Array</h3>
+            <p>Fixed-size, index-based storage</p>
+          </div>
+          <div class="ds-card">
+            <h3>Linked List</h3>
+            <p>Nodes connected using pointers</p>
+          </div>
+          <div class="ds-card">
+            <h3>Stack</h3>
+            <p>LIFO (Last In, First Out)</p>
+          </div>
         </div>
       </div>
-    </div>
+
+      <div class="carousel-section fade-edges">
+        <div class="carousel-row reverse">
+          <!-- Trees -->
+          <div class="ds-card">
+            <h3>Binary Tree</h3>
+            <p>Hierarchical tree structure</p>
+          </div>
+          <div class="ds-card">
+            <h3>Binary Search Tree</h3>
+            <p>Ordered binary tree for searching</p>
+          </div>
+          <div class="ds-card">
+            <h3>AVL Tree</h3>
+            <p>Self-balancing binary search tree</p>
+          </div>
+          <div class="ds-card">
+            <h3>Red-Black Tree</h3>
+            <p>Balanced tree with color properties</p>
+          </div>
+          <div class="ds-card">
+            <h3>Heap</h3>
+            <p>Complete binary tree structure</p>
+          </div>
+          <div class="ds-card">
+            <h3>Trie</h3>
+            <p>Prefix tree for string operations</p>
+          </div>
+          <div class="ds-card">
+            <h3>Segment Tree</h3>
+            <p>Range query data structure</p>
+          </div>
+          <!-- Duplicate for seamless scroll -->
+          <div class="ds-card">
+            <h3>Binary Tree</h3>
+            <p>Hierarchical tree structure</p>
+          </div>
+          <div class="ds-card">
+            <h3>Binary Search Tree</h3>
+            <p>Ordered binary tree for searching</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-section fade-edges">
+        <div class="carousel-row">
+          <!-- Graphs & Hash -->
+          <div class="ds-card">
+            <h3>Graph</h3>
+            <p>Nodes and edges network</p>
+          </div>
+          <div class="ds-card">
+            <h3>Directed Graph</h3>
+            <p>Graph with directional edges</p>
+          </div>
+          <div class="ds-card">
+            <h3>Weighted Graph</h3>
+            <p>Edges with weight values</p>
+          </div>
+          <div class="ds-card">
+            <h3>Adjacency Matrix</h3>
+            <p>Matrix representation of graph</p>
+          </div>
+          <div class="ds-card">
+            <h3>Hash Table</h3>
+            <p>Fast data retrieval structure</p>
+          </div>
+          <div class="ds-card">
+            <h3>Hash Map</h3>
+            <p>Key-value pair storage</p>
+          </div>
+          <div class="ds-card">
+            <h3>Hash Set</h3>
+            <p>Unique elements collection</p>
+          </div>
+          <!-- Duplicate for seamless scroll -->
+          <div class="ds-card">
+            <h3>Graph</h3>
+            <p>Nodes and edges network</p>
+          </div>
+          <div class="ds-card">
+            <h3>Directed Graph</h3>
+            <p>Graph with directional edges</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALGORITHMS SECTION -->
+      <div class="section-header" style="margin-top: 5rem">
+        <h2 class="section-title">ALGORITHMS</h2>
+      </div>
+
+      <div class="carousel-section fade-edges">
+        <div class="carousel-row reverse">
+          <!-- Sorting & Searching -->
+          <div class="algorithm-card">
+            <h3>Merge Sort</h3>
+            <!-- <p>Divide and conquer sorting</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Quick Sort</h3>
+            <!-- <p>Fast partition-based sorting</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Binary Search</h3>
+            <!-- <p>Efficient search in sorted array</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Greedy Algorithms</h3>
+            <!-- <p>Optimal choice at each step</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Fractional Knapsack</h3>
+            <!-- <p>Maximize value with fractions</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Job Sequencing</h3>
+            <!-- <p>Schedule jobs with deadlines</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Prim's Algorithm</h3>
+            <!-- <p>Minimum spanning tree</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Kruskal's Algorithm</h3>
+            <!-- <p>MST with edge sorting</p> -->
+          </div>
+          <!-- Duplicate -->
+          <div class="algorithm-card">
+            <h3>Merge Sort</h3>
+            <!-- <p>Divide and conquer sorting</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Quick Sort</h3>
+            <!-- <p>Fast partition-based sorting</p> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-section fade-edges">
+        <div class="carousel-row">
+          <!-- Graph Algorithms -->
+          <div class="algorithm-card">
+            <h3>Dijkstra's Algorithm</h3>
+            <!-- <p>Shortest path in weighted graph</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>String Matching</h3>
+            <!-- <p>Pattern search in text</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Rabin-Karp</h3>
+            <!-- <p>Hashing-based pattern matching</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Dynamic Programming</h3>
+            <!-- <p>Optimal substructure solutions</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Floyd-Warshall</h3>
+            <!-- <p>All-pairs shortest path</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Warshall Algorithm</h3>
+            <!-- <p>Transitive closure of graph</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Optimal BST</h3>
+            <!-- <p>Minimize search cost tree</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>0/1 Knapsack</h3>
+            <!-- <p>Maximum value selection</p> -->
+          </div>
+          <!-- Duplicate -->
+          <div class="algorithm-card">
+            <h3>Dijkstra's Algorithm</h3>
+            <!-- <p>Shortest path in weighted graph</p> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-section fade-edges">
+        <div class="carousel-row reverse">
+          <!-- Advanced Algorithms -->
+          <div class="algorithm-card">
+            <h3>TSP</h3>
+            <!-- <p>Traveling Salesman Problem</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Matrix Chain</h3>
+            <!-- <p>Optimal matrix multiplication</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>LCS</h3>
+            <!-- <p>Longest Common Subsequence</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Simplex Method</h3>
+            <!-- <p>Linear programming optimization</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Max Flow</h3>
+            <!-- <p>Maximum network flow</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Stable Marriage</h3>
+            <!-- <p>Matching problem solution</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>N-Queens</h3>
+            <!-- <p>Backtracking chess problem</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Hamiltonian Circuit</h3>
+            <!-- <p>Visit all vertices once</p> -->
+          </div>
+          <div class="algorithm-card">
+            <h3>Graph Coloring</h3>
+            <!-- <p>Color nodes with constraints</p> -->
+          </div>
+          <!-- Duplicate -->
+          <div class="algorithm-card">
+            <h3>TSP</h3>
+            <!-- <p>Traveling Salesman Problem</p> -->
+          </div>
+        </div>
+      </div>
+    </section>
 
     <section class="features">
       <h2>Why Choose DSA Learner?</h2>
@@ -790,10 +1428,54 @@
       </div>
     </section>
 
-    <footer>
-      <p>
-        © 2024 DSA Learner. Making algorithm education visual and interactive.
-      </p>
+    <footer class="site-footer">
+      <div class="footer-container">
+        <!-- Left brand section -->
+        <div class="footer-brand">
+          <h2>DSA Visualiser</h2>
+          <p>
+            Learn Data Structures & Algorithms through interactive, step-by-step
+            visualizations.
+          </p>
+
+          <!-- <div class="footer-socials">
+            <span>🐦</span>
+            <span>📸</span>
+            <span>💼</span>
+            <span>💬</span>
+          </div> -->
+        </div>
+
+        <!-- Footer links -->
+        <div class="footer-links">
+          <div>
+            <h4>Explore</h4>
+            <a href="#">Arrays</a>
+            <a href="#">Trees</a>
+            <a href="#">Graphs</a>
+            <a href="#">Dynamic Programming</a>
+          </div>
+
+          <div>
+            <h4>Resources</h4>
+            <a href="#">Documentation</a>
+            <a href="#">Visual Demos</a>
+            <a href="#">Tutorials</a>
+            <a href="#">Blog</a>
+          </div>
+
+          <div>
+            <h4>Company</h4>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="footer-bottom">
+        © <span id="year"></span> DSA Learner. All rights reserved.
+      </div> -->
     </footer>
 
     <script>
@@ -816,6 +1498,7 @@
         html.setAttribute("data-theme", "dark");
         themeToggle.textContent = "☀️";
       }
+      document.getElementById("year").textContent = new Date().getFullYear(); //for automatic year updation
     </script>
   </body>
 </html>
