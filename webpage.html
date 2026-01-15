@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login/Register</title>
+  <style>
+    .nav-button {
+      padding: 10px 20px;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 0 10px;
+      transition: background 0.3s ease;
+    }
+    .nav-button:hover {
+      background-color: #1976D2;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    body { 
+      background: #f0f0f0; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      height: 100vh; 
+      transition: background 0.5s ease;
+    }
+    .container {
+      position: relative;
+      width: 800px;
+      height: 500px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      transition: background 0.5s ease;
+    }
+    .form-container {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 50%;
+      padding: 40px;
+      transition: all 0.6s ease-in-out;
+    }
+    .sign-in-container { left: 0; z-index: 2; }
+    .sign-up-container { left: 0; opacity: 0; z-index: 1; }
+    .container.right-panel-active .sign-in-container {
+      transform: translateX(100%);
+      opacity: 0;
+      z-index: 1;
+    }
+    .container.right-panel-active .sign-up-container {
+      transform: translateX(100%);
+      opacity: 1;
+      z-index: 2;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+    h2 { margin-bottom: 20px; color: #2196F3; transition: color 0.5s ease; }
+    input {
+      margin: 10px 0;
+      padding: 12px;
+      width: 80%;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      transition: background 0.5s ease, color 0.5s ease, border 0.5s ease;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 20px;
+      background: #2196F3;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+    .overlay-container {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 50%;
+      height: 100%;
+      background: #2196F3;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      transition: transform 0.6s ease-in-out, background 0.5s ease;
+      text-align: center;
+    }
+    .container.right-panel-active .overlay-container {
+      transform: translateX(-100%);
+    }
+    .overlay h1 { font-size: 32px; margin-bottom: 10px; }
+    .overlay p { font-size: 16px; margin-bottom: 20px; }
+    .overlay button {
+      background: white;
+      color: #2196F3;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+
+    /* Dark Mode Styles */
+    body.dark-mode { background: #0d0d0d; }
+    .container.dark-mode { background: #1a1a1a; box-shadow: 0 0 20px rgba(0,0,0,0.6); }
+    .dark-mode h2 { color: #2196F3; }
+    .dark-mode input { background: #0d0d0d; color: #e0e0e0; border: 1px solid #333; }
+    .dark-mode input::placeholder { color: #888; }
+    .dark-mode button { background: #2196F3; color: white; }
+    .dark-mode .overlay-container { background: #2196F3; }
+    .dark-mode .overlay button { background: #0d0d0d; color: #2196F3; }
+
+    /* Toggle Switch */
+    .toggle-switch {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: #ccc;
+      border-radius: 20px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.5s ease, color 0.5s ease;
+      z-index: 1000;
+    }
+    .dark-mode .toggle-switch {
+      background: #2196F3;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="toggle-switch" id="modeToggle"> Dark Mode</div>
+  
+  <div class="container" id="container">
+    <div class="form-container sign-in-container">
+      <form>
+        <h2>Sign In to DSA Visualiser</h2>
+        <input type="email" placeholder="Email" required />
+        <input type="password" placeholder="Password" required />
+        <a href="#">Forgot your password?</a>
+        <button>SIGN IN</button>
+      </form>
+    </div>
+    <div class="form-container sign-up-container">
+      <form>
+        <h2>Create Account</h2>
+        <input type="text" placeholder="Name" required />
+        <input type="email" placeholder="Email" required />
+        <input type="password" placeholder="Password" required minlength="6" />
+        <button>SIGN UP</button>
+      </form>
+    </div>
+    <div class="overlay-container">
+      <div class="overlay">
+        <h1 id="panelTitle">Hello, Friend!</h1>
+        <p id="panelText">Enter your details and start your journey with us</p>
+        <button id="toggleBtn">SIGN UP</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const container = document.getElementById('container');
+  const toggleBtn = document.getElementById('toggleBtn');
+  const panelTitle = document.getElementById('panelTitle');
+  const panelText = document.getElementById('panelText');
+  const modeToggle = document.getElementById('modeToggle');
+
+  // --- PERSISTENT DARK MODE LOGIC ---
+  function setDarkMode(isDark) {
+    if (isDark) {
+      document.body.classList.add('dark-mode');
+      container.classList.add('dark-mode');
+      modeToggle.textContent = '☀️ Light Mode';
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.body.classList.remove('dark-mode');
+      container.classList.remove('dark-mode');
+      modeToggle.textContent = '🌙 Dark Mode';
+      localStorage.setItem('theme', 'light');
+    }
+  }
+
+  // Check storage on load
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    setDarkMode(true);
+  } else if (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    setDarkMode(true);
+  }
+
+  // Toggle listener
+  modeToggle.addEventListener('click', () => {
+    const isNowDark = !document.body.classList.contains('dark-mode');
+    setDarkMode(isNowDark);
+  });
+
+  // --- EXISTING PANEL LOGIC ---
+  toggleBtn.addEventListener('click', () => {
+    const isSignUpActive = container.classList.contains('right-panel-active');
+    if (isSignUpActive) {
+      container.classList.remove('right-panel-active');
+      toggleBtn.textContent = 'SIGN UP';
+      panelTitle.textContent = 'Hello, Friend!';
+      panelText.textContent = 'Enter your details and start your journey with us';
+    } else {
+      container.classList.add('right-panel-active');
+      toggleBtn.textContent = 'SIGN IN';
+      panelTitle.textContent = 'Welcome Back!';
+      panelText.textContent = 'To keep connected with us please login';
+    }
+  });
+
+  // URL Parameter logic
+  const params = new URLSearchParams(window.location.search);
+  const mode = params.get('mode');
+  if (mode === 'signup') {
+    container.classList.add('right-panel-active');
+    toggleBtn.textContent = 'SIGN IN';
+  } else if (mode === 'signin') {
+    container.classList.remove('right-panel-active');
+    toggleBtn.textContent = 'SIGN UP';
+  }
+</script>
+</body>
+</html>
