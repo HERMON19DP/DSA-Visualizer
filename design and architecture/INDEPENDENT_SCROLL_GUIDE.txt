@@ -1,0 +1,444 @@
+╔═══════════════════════════════════════════════════════════════╗
+║        INDEPENDENT PANEL SCROLLING - IMPLEMENTATION           ║
+╚═══════════════════════════════════════════════════════════════╝
+
+🎯 GOAL: Make right panel scroll independently while left panel 
+         (visualization) stays visible
+
+═══════════════════════════════════════════════════════════════
+📋 WHAT YOU'LL CHANGE
+═══════════════════════════════════════════════════════════════
+
+✓ Update .container CSS (around line 125)
+✓ Update .visualization-panel CSS (around line 135)
+✓ Update .info-panel CSS (around line 295)
+✓ Add custom scrollbar styling (new)
+✓ Update responsive styles (around line 420)
+
+═══════════════════════════════════════════════════════════════
+STEP 1: UPDATE MAIN CONTAINER
+═══════════════════════════════════════════════════════════════
+
+FIND (around line 125):
+──────────────────────────────────────────────────────────────
+.container {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  min-height: calc(100vh - 80px);
+}
+──────────────────────────────────────────────────────────────
+
+REPLACE WITH:
+──────────────────────────────────────────────────────────────
+.container {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  
+  /* UPDATED: Fixed height prevents page scroll */
+  height: calc(100vh - 80px);
+  overflow: hidden;
+}
+──────────────────────────────────────────────────────────────
+
+KEY CHANGES:
+- Changed min-height → height
+- Added overflow: hidden
+
+═══════════════════════════════════════════════════════════════
+STEP 2: UPDATE LEFT PANEL (VISUALIZATION)
+═══════════════════════════════════════════════════════════════
+
+FIND (around line 135):
+──────────────────────────────────────────────────────────────
+.visualization-panel {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 2px solid var(--border);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+──────────────────────────────────────────────────────────────
+
+REPLACE WITH:
+──────────────────────────────────────────────────────────────
+.visualization-panel {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 2px solid var(--border);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  
+  /* NEW: Take full height, no scroll */
+  height: 100%;
+  overflow: visible;
+}
+──────────────────────────────────────────────────────────────
+
+KEY CHANGES:
+- Added height: 100%
+- Added overflow: visible
+
+═══════════════════════════════════════════════════════════════
+STEP 3: UPDATE INPUT SECTION
+═══════════════════════════════════════════════════════════════
+
+FIND (around line 145):
+──────────────────────────────────────────────────────────────
+.input-section {
+  background: var(--bg-main);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+}
+──────────────────────────────────────────────────────────────
+
+REPLACE WITH:
+──────────────────────────────────────────────────────────────
+.input-section {
+  background: var(--bg-main);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  
+  /* NEW: Don't grow too much */
+  flex-shrink: 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+──────────────────────────────────────────────────────────────
+
+KEY CHANGES:
+- Added flex-shrink: 0
+- Added max-height: 300px
+- Added overflow-y: auto (scrolls if many inputs)
+
+═══════════════════════════════════════════════════════════════
+STEP 4: UPDATE VISUALIZATION AREA
+═══════════════════════════════════════════════════════════════
+
+FIND (around line 210):
+──────────────────────────────────────────────────────────────
+.viz-area {
+  flex: 1;
+  background: var(--bg-main);
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  padding: 2rem;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+──────────────────────────────────────────────────────────────
+
+REPLACE WITH:
+──────────────────────────────────────────────────────────────
+.viz-area {
+  flex: 1;
+  background: var(--bg-main);
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  padding: 2rem;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  /* NEW: Scroll if content is large */
+  overflow-y: auto;
+}
+──────────────────────────────────────────────────────────────
+
+KEY CHANGES:
+- Reduced min-height (400px → 300px)
+- Added overflow-y: auto
+
+═══════════════════════════════════════════════════════════════
+STEP 5: UPDATE CONTROLS & STEP INDICATOR
+═══════════════════════════════════════════════════════════════
+
+FIND (around line 233):
+──────────────────────────────────────────────────────────────
+.controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+──────────────────────────────────────────────────────────────
+
+REPLACE WITH:
+──────────────────────────────────────────────────────────────
+.controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  
+  /* NEW: Don't shrink */
+  flex-shrink: 0;
+}
+──────────────────────────────────────────────────────────────
+
+AND
+
+FIND (around line 368):
+──────────────────────────────────────────────────────────────
+.step-indicator {
+  background: var(--bg-main);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--primary-blue);
+}
+──────────────────────────────────────────────────────────────
+
+REPLACE WITH:
+──────────────────────────────────────────────────────────────
+.step-indicator {
+  background: var(--bg-main);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--primary-blue);
+  
+  /* NEW: Don't shrink */
+  flex-shrink: 0;
+}
+──────────────────────────────────────────────────────────────
+
+═══════════════════════════════════════════════════════════════
+STEP 6: UPDATE RIGHT PANEL (MOST IMPORTANT!)
+═══════════════════════════════════════════════════════════════
+
+FIND (around line 295):
+──────────────────────────────────────────────────────────────
+.info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+──────────────────────────────────────────────────────────────
+
+REPLACE WITH:
+──────────────────────────────────────────────────────────────
+.info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  
+  /* NEW: Independent scrolling - THIS IS THE KEY! */
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+──────────────────────────────────────────────────────────────
+
+KEY CHANGES:
+- Added height: 100% (matches container height)
+- Added overflow-y: auto (enables scrolling!)
+- Added padding-right: 0.5rem (space for scrollbar)
+
+═══════════════════════════════════════════════════════════════
+STEP 7: ADD CUSTOM SCROLLBAR STYLING (OPTIONAL)
+═══════════════════════════════════════════════════════════════
+
+ADD THIS AFTER .info-panel (around line 305):
+──────────────────────────────────────────────────────────────
+/* Custom scrollbar for right panel */
+.info-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.info-panel::-webkit-scrollbar-track {
+  background: var(--surface);
+  border-radius: 10px;
+}
+
+.info-panel::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.info-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-blue);
+}
+
+/* Dark mode scrollbar */
+[data-theme="dark"] .info-panel::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+[data-theme="dark"] .info-panel::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+
+[data-theme="dark"] .info-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-blue);
+}
+──────────────────────────────────────────────────────────────
+
+This makes the scrollbar look professional!
+
+═══════════════════════════════════════════════════════════════
+STEP 8: UPDATE INFO CARDS
+═══════════════════════════════════════════════════════════════
+
+FIND (around line 302):
+──────────────────────────────────────────────────────────────
+.info-card {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 2px solid var(--border);
+  padding: 1.5rem;
+}
+──────────────────────────────────────────────────────────────
+
+REPLACE WITH:
+──────────────────────────────────────────────────────────────
+.info-card {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 2px solid var(--border);
+  padding: 1.5rem;
+  
+  /* NEW: Ensure cards don't collapse */
+  flex-shrink: 0;
+}
+──────────────────────────────────────────────────────────────
+
+═══════════════════════════════════════════════════════════════
+STEP 9: UPDATE RESPONSIVE STYLES
+═══════════════════════════════════════════════════════════════
+
+FIND (around line 418):
+──────────────────────────────────────────────────────────────
+@media (max-width: 1200px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .info-panel {
+    order: -1;
+  }
+}
+──────────────────────────────────────────────────────────────
+
+REPLACE WITH:
+──────────────────────────────────────────────────────────────
+@media (max-width: 1200px) {
+  .container {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
+  }
+
+  .visualization-panel {
+    height: auto;
+    overflow: visible;
+  }
+
+  .info-panel {
+    height: auto;
+    max-height: 600px;
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .info-panel {
+    max-height: 500px;
+  }
+}
+──────────────────────────────────────────────────────────────
+
+═══════════════════════════════════════════════════════════════
+✅ TESTING CHECKLIST
+═══════════════════════════════════════════════════════════════
+
+After making changes:
+
+1. Open visualizer.html?algo=array
+   □ Left panel should NOT scroll
+   □ Right panel should have scrollbar
+
+2. Scroll right panel down
+   □ Visualization should stay visible
+   □ Pseudocode at bottom should be accessible
+
+3. Test with different algorithms
+   □ Merge Sort (longer pseudocode)
+   □ Binary Search (shorter pseudocode)
+   □ Check all display properly
+
+4. Test controls
+   □ Play, pause, step buttons should stay visible
+   □ They should not scroll away
+
+5. Test responsive
+   □ Resize browser window
+   □ Check mobile view
+   □ Panels should stack properly
+
+6. Test dark mode
+   □ Scrollbar should be visible
+   □ Colors should look good
+
+═══════════════════════════════════════════════════════════════
+🎯 EXPECTED RESULT
+═══════════════════════════════════════════════════════════════
+
+DESKTOP VIEW:
+┌────────────────────────────────────────────────────┐
+│                    HEADER                          │
+├───────────────────────┬────────────────────────────┤
+│ Input Section         │ ↓ Algorithm Info          ↑│
+│ [inputs here]         │   Category, Complexity     ││
+├───────────────────────┤ ↓ Description             ↓│
+│                       │ ↓ Historical Info          │
+│   VISUALIZATION       │ ↓ Pseudocode               │
+│   [stays visible!]    │   Line 1                   │
+│                       │   Line 2                   │
+├───────────────────────┤   Line 3...               ↓│
+│ ▶ ⏸ ⏭ 🔄            │   [scrolls here]           │
+└───────────────────────┴────────────────────────────┘
+         ↑                           ↑
+      No scroll              Independent scroll!
+
+═══════════════════════════════════════════════════════════════
+🚀 BENEFITS
+═══════════════════════════════════════════════════════════════
+
+✅ Can see visualization while reading pseudocode
+✅ Can scroll through all algorithm info
+✅ Controls always visible
+✅ Better UX for learning
+✅ Professional split-panel layout
+✅ Like VS Code or other IDEs
+
+═══════════════════════════════════════════════════════════════
+
+That's it! Your panels now scroll independently! 🎉
+
+═══════════════════════════════════════════════════════════════

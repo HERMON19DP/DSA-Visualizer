@@ -1,0 +1,270 @@
+┌─────────────────────────────────────────────────────────────────┐
+│                    DSA LEARNER APP ARCHITECTURE                 │
+│                     Complete System Overview                     │
+└─────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════
+1. HOW IT ALL CONNECTS
+═══════════════════════════════════════════════════════════════════
+
+   USER                     HOMEPAGE                  VISUALIZER
+    │                          │                          │
+    │  Opens browser          │                          │
+    ├──────────────────>  index.html                     │
+    │                          │                          │
+    │                     [Loads cards                    │
+    │                      dynamically]                   │
+    │                          │                          │
+    │                     Reads from:                     │
+    │                    algorithms-data.js               │
+    │                          │                          │
+    │                    Creates 60+                      │
+    │                    clickable cards                  │
+    │                          │                          │
+    │  Clicks "Binary Search"  │                          │
+    ├─────────────────────────>│                          │
+    │                          │                          │
+    │                    Redirects to:                    │
+    │              visualizer.html?algo=binary-search     │
+    │                          │                          │
+    │                          ├────────────────────>     │
+    │                          │                     visualizer.html
+    │                          │                          │
+    │                          │                     [Reads URL param]
+    │                          │                          │
+    │                          │                     Gets ?algo=
+    │                          │                     binary-search
+    │                          │                          │
+    │                          │                     Looks up in:
+    │                          │                   algorithms-data.js
+    │                          │                          │
+    │                          │                     [Displays all info]
+    │  Sees visualization  <───┴──────────────────────────┤
+    │                                                      │
+
+
+═══════════════════════════════════════════════════════════════════
+2. FILE RESPONSIBILITIES
+═══════════════════════════════════════════════════════════════════
+
+┌────────────────────────────────────────┐
+│         algorithms-data.js             │  ← THE BRAIN
+├────────────────────────────────────────┤
+│ • Stores ALL algorithm metadata        │
+│ • 60+ algorithm definitions            │
+│ • Name, complexity, pseudocode, etc.   │
+│ • ONE place to add new algorithms      │
+└────────────────────────────────────────┘
+              ↓               ↓
+              ↓               ↓
+  ┌───────────────┐    ┌──────────────┐
+  │  index.html   │    │visualizer.html│
+  ├───────────────┤    ├───────────────┤
+  │ • Shows cards │    │ • Shows one   │
+  │ • Navigation  │    │   algorithm   │
+  │ • Homepage    │    │ • Runs viz    │
+  └───────────────┘    └───────────────┘
+
+
+═══════════════════════════════════════════════════════════════════
+3. DATA FLOW EXAMPLE: User Clicks "Merge Sort"
+═══════════════════════════════════════════════════════════════════
+
+STEP 1: On Homepage
+┌──────────────────────────────────┐
+│  <div class="algorithm-card"     │
+│    onclick="goTo('merge-sort')"> │  ← User clicks this
+│    <h3>Merge Sort</h3>           │
+│  </div>                          │
+└──────────────────────────────────┘
+              ↓
+              
+STEP 2: JavaScript Executes
+┌──────────────────────────────────────────┐
+│  function goTo(algoKey) {                │
+│    window.location.href =                │
+│      `visualizer.html?algo=${algoKey}`;  │
+│  }                                       │
+└──────────────────────────────────────────┘
+              ↓
+
+STEP 3: Browser Navigates
+┌──────────────────────────────────────────┐
+│  URL becomes:                            │
+│  visualizer.html?algo=merge-sort         │
+│                   ^^^^^^^^^^^^           │
+│                   This is the key!       │
+└──────────────────────────────────────────┘
+              ↓
+
+STEP 4: Visualizer Reads URL
+┌──────────────────────────────────────────┐
+│  const params = new URLSearchParams(     │
+│    window.location.search                │
+│  );                                      │
+│  const algoKey = params.get('algo');     │
+│  // algoKey = "merge-sort"               │
+└──────────────────────────────────────────┘
+              ↓
+
+STEP 5: Looks Up Data
+┌──────────────────────────────────────────┐
+│  const algoData = DSAData[algoKey];      │
+│  // Gets all merge sort info             │
+│  // {                                    │
+│  //   name: "Merge Sort",                │
+│  //   complexity: "O(n log n)",          │
+│  //   ...                                │
+│  // }                                    │
+└──────────────────────────────────────────┘
+              ↓
+
+STEP 6: Displays Everything
+┌──────────────────────────────────────────┐
+│  document.getElementById('title')        │
+│    .textContent = algoData.name;         │
+│                                          │
+│  document.getElementById('complexity')   │
+│    .textContent = algoData.timeComplexity│
+│  // etc.                                 │
+└──────────────────────────────────────────┘
+
+
+═══════════════════════════════════════════════════════════════════
+4. ADDING A NEW ALGORITHM (60 SECONDS!)
+═══════════════════════════════════════════════════════════════════
+
+Open algorithms-data.js and add:
+
+┌─────────────────────────────────────────────────────────────┐
+│  'counting-sort': {                                         │
+│    name: 'Counting Sort',                                   │
+│    category: 'Sorting',                                     │
+│    type: 'algorithm',                                       │
+│    visualizationType: 'array',                              │
+│    timeComplexity: 'O(n + k)',                              │
+│    spaceComplexity: 'O(k)',                                 │
+│    description: 'Integer sorting algorithm',                │
+│    developer: 'Harold H. Seward',                           │
+│    yearDeveloped: '1954',                                   │
+│    useCases: 'Sorting integers with small range',           │
+│    pseudocode: [                                            │
+│      'count occurrences of each element',                   │
+│      'calculate cumulative counts',                         │
+│      'place elements in sorted order'                       │
+│    ],                                                       │
+│    inputFields: [                                           │
+│      { name: 'array', label: 'Input Array',                 │
+│        type: 'array', placeholder: 'e.g., 4,2,2,8,3' }     │
+│    ]                                                        │
+│  },                                                         │
+└─────────────────────────────────────────────────────────────┘
+
+THAT'S IT! Now:
+  ✓ Card appears on homepage automatically
+  ✓ Clicking it opens visualizer
+  ✓ All info displays correctly
+
+
+═══════════════════════════════════════════════════════════════════
+5. WHY THIS ARCHITECTURE IS BRILLIANT
+═══════════════════════════════════════════════════════════════════
+
+❌ BAD APPROACH (Don't do this):
+   60 separate HTML files:
+   - binary-search.html
+   - merge-sort.html
+   - quick-sort.html
+   - ... (57 more files)
+   
+   Problems:
+   • Change design → Edit 60 files
+   • Fix bug → Edit 60 files  
+   • Add feature → Edit 60 files
+   • Nightmare to maintain!
+
+✅ GOOD APPROACH (What we built):
+   1 visualizer.html + data-driven
+   
+   Benefits:
+   • Change design → Edit 1 file
+   • Fix bug → Edit 1 file
+   • Add algorithm → Edit data file only
+   • Professional & scalable!
+
+
+═══════════════════════════════════════════════════════════════════
+6. REAL-WORLD ANALOGY
+═══════════════════════════════════════════════════════════════════
+
+Think of it like a restaurant:
+
+❌ BAD: Having 60 different restaurants (one for each dish)
+   → Want to change decor? Change 60 restaurants!
+   
+✅ GOOD: One restaurant with a menu (data file)
+   → Want to change decor? Change one restaurant!
+   → Want new dish? Just add to menu!
+
+Our system:
+  visualizer.html = The restaurant (same layout)
+  algorithms-data.js = The menu (list of items)
+  URL parameter = The order ticket
+
+
+═══════════════════════════════════════════════════════════════════
+7. TESTING IT OUT
+═══════════════════════════════════════════════════════════════════
+
+1. Open index.html in browser
+2. You'll see all algorithm cards
+3. Click "Binary Search"
+4. URL changes to: visualizer.html?algo=binary-search
+5. Page shows all binary search info
+6. Try clicking other cards - same visualizer, different data!
+
+
+═══════════════════════════════════════════════════════════════════
+8. THE MAGIC LINE OF CODE
+═══════════════════════════════════════════════════════════════════
+
+This one line makes everything work:
+
+  const algoData = DSAData[algoKey];
+                   ^^^^^^^^ ^^^^^^^
+                      |         |
+                   data file   from URL
+
+It's like:
+  const info = phoneBook[nameFromURLParameter];
+
+
+═══════════════════════════════════════════════════════════════════
+9. WHAT CHATGPT WAS TRYING TO EXPLAIN
+═══════════════════════════════════════════════════════════════════
+
+ChatGPT was saying:
+  "Don't make 60 pages. Make 1 smart page."
+
+How?
+  1. URL parameters (?algo=whatever)
+  2. Data file (list of all algorithms)
+  3. Dynamic loading (read URL, load data)
+
+This is how professionals build apps!
+
+
+═══════════════════════════════════════════════════════════════════
+10. YOUR NEXT STEPS
+═══════════════════════════════════════════════════════════════════
+
+□ 1. Test it - open index.html and click around
+□ 2. Add a new algorithm to algorithms-data.js
+□ 3. See it appear automatically
+□ 4. Customize the colors/design
+□ 5. Build actual visualization animations
+□ 6. Deploy online (GitHub Pages / Netlify)
+
+You now understand production-grade web architecture! 🎉
+
+═══════════════════════════════════════════════════════════════════
