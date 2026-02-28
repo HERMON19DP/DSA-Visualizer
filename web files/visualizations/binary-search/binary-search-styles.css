@@ -1,0 +1,144 @@
+/* ============================================================
+   Binary Search — Visualization Styles
+   Loaded dynamically by router.js when algo=binary-search
+   ============================================================ */
+
+/* ── Cell states ── */
+.array-element.bs-in-range {
+  background: rgba(37,99,235,0.08);
+  border-color: rgba(37,99,235,0.4);
+}
+
+.array-element.bs-mid {
+  background: var(--success);
+  border-color: var(--success);
+  color: white;
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 6px 20px rgba(16,185,129,0.35);
+}
+
+.array-element.bs-found {
+  background: var(--success);
+  border-color: var(--success);
+  color: white;
+  transform: translateY(-7px) scale(1.15);
+  box-shadow: 0 8px 28px rgba(16,185,129,0.45);
+  animation: bs-pulse 1s ease infinite;
+}
+
+.array-element.bs-eliminated {
+  opacity: 0.2;
+  transform: scale(0.88);
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.array-element.bs-not-found {
+  border-color: var(--error);
+  background: rgba(239,68,68,0.1);
+  color: var(--error);
+}
+
+@keyframes bs-pulse {
+  0%, 100% { box-shadow: 0 8px 28px rgba(16,185,129,0.45); }
+  50%       { box-shadow: 0 8px 40px rgba(16,185,129,0.75); }
+}
+
+/* ── Pointer labels (L / M / R) above array ── */
+.bs-pointer-row {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 0.25rem;
+}
+
+.bs-ptr {
+  width: 60px;
+  min-width: 60px;
+  text-align: center;
+  font-family: "Courier New", monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: transparent;
+  transition: color 0.25s;
+}
+
+.bs-ptr.show-L { color: var(--primary-blue); }
+.bs-ptr.show-R { color: var(--warning); }
+.bs-ptr.show-M { color: var(--success); }
+.bs-ptr::after { display: block; content: '▲'; font-size: 0.85rem; }
+
+/* ── Index row below array ── */
+.bs-index-row {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.25rem;
+}
+
+.bs-idx {
+  width: 60px;
+  min-width: 60px;
+  text-align: center;
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  font-family: "Courier New", monospace;
+}
+
+/* ── Step message box ── */
+.bs-msg {
+  margin-top: 1.25rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: center;
+  width: 100%;
+}
+
+.bs-msg .hl-blue   { color: var(--primary-blue); font-family: "Courier New", monospace; font-weight: 700; }
+.bs-msg .hl-green  { color: var(--success);       font-family: "Courier New", monospace; font-weight: 700; }
+.bs-msg .hl-orange { color: var(--warning);       font-family: "Courier New", monospace; font-weight: 700; }
+.bs-msg .hl-red    { color: var(--error);         font-weight: 700; }
+
+/* ── Variables strip ── */
+.bs-vars {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.bs-var {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  text-align: center;
+  min-width: 90px;
+}
+
+.bs-var-name {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+
+.bs-var-val {
+  font-family: "Courier New", monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-top: 0.1rem;
+  transition: color 0.2s;
+}
+
+.bs-var.var-l .bs-var-val { color: var(--primary-blue); }
+.bs-var.var-r .bs-var-val { color: var(--warning); }
+.bs-var.var-m .bs-var-val { color: var(--success); }
+.bs-var.var-t .bs-var-val { color: var(--text-primary); }
