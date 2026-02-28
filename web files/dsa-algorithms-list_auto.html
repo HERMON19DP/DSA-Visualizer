@@ -1,0 +1,1354 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DSA Learner - Algorithms & Data Structures</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&family=Inconsolata:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        /* Light Mode - White & Blue */
+        --primary-blue: #2563eb;
+        --primary-dark: #1e40af;
+        --primary-light: #dbeafe;
+        --accent-hover: #3b82f6;
+        --bg-main: #ffffff;
+        --surface: #f8fafc;
+        --text-primary: #000000;
+        --text-secondary: #64748b;
+        --border: #e2e8f0;
+      }
+
+      [data-theme="dark"] {
+        /* Dark Mode – Slate Blue (Modern & Eye-friendly) */
+        --primary-blue: #60a5fa;
+        --primary-dark: #93c5fd;
+        --primary-light: #1e3a8a;
+        --accent-hover: #93c5fd;
+        --bg-main: #0f172a;
+        --surface: #020617;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --border: #1e293b;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+          Cantarell, sans-serif;
+        background: var(--bg-main);
+        color: var(--text-primary);
+        overflow-x: hidden;
+        transition:
+          background 0.3s ease,
+          color 0.3s ease;
+      }
+
+      /* ===== SIMPLE W3-STYLE NAVBAR ===== */
+
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: flex-start;
+        gap: 1rem;
+        align-items: center;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.9);
+        transition: all 0.3s ease;
+      }
+
+      [data-theme="dark"] .navbar {
+        background: rgb(30, 41, 59);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .logo span {
+        background: linear-gradient(
+          135deg,
+          var(--primary-blue),
+          var(--primary-dark)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .logo-icon {
+        height: 32px;
+        width: auto;
+        display: block;
+      }
+
+      .nav-controls {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-left: auto;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        margin-left: 2rem;
+      }
+
+      .nav-item {
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        position: relative;
+        padding-bottom: 6px;
+        transition: color 0.3s ease;
+      }
+
+      .nav-item:hover {
+        color: var(--text-primary);
+      }
+
+      /* .nav-item::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 0%;
+        height: 3px;
+        background: var(--primary-blue);
+        border-radius: 2px;
+        transition: width 0.3s ease;
+      }
+
+      .nav-item:hover::after {
+        width: 100%;
+      }
+
+      .nav-item.active::after {
+        width: 100%;
+      } */
+
+      .theme-toggle {
+        background: none;
+        border: 2px solid var(--border);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+      }
+
+      .theme-toggle:hover {
+        border-color: var(--primary-blue);
+        transform: scale(1.1);
+      }
+
+      .auth-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .signup-btn,
+    .signin-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+    }
+
+    .signup-btn {
+      background: transparent;
+      color: var(--primary-blue);
+      border: 2px solid var(--primary-blue);
+    }
+
+    .signup-btn:hover {
+      background: var(--primary-light);
+      transform: translateY(-2px);
+    }
+
+    .signin-btn {
+      background: var(--primary-blue);
+      color: white;
+      border: none;
+    }
+
+    .signin-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+      /* ===== LOGIN/REGISTER MODAL ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: #999;
+      cursor: pointer;
+      z-index: 10;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .close-modal:hover {
+      background: #f0f0f0;
+      color: #333;
+    }
+
+    .modal-container {
+      position: relative;
+      width: 800px;
+      height: 500px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      display: flex;
+      animation: slideUp 0.4s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-container {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 50%;
+      padding: 40px;
+      transition: all 0.6s ease-in-out;
+    }
+
+    .sign-in-container {
+      left: 0;
+      z-index: 2;
+    }
+
+    .sign-up-container {
+      left: 0;
+      opacity: 0;
+      z-index: 1;
+    }
+
+    .modal-container.right-panel-active .sign-in-container {
+      transform: translateX(100%);
+      opacity: 0;
+      z-index: 1;
+    }
+
+    .modal-container.right-panel-active .sign-up-container {
+      transform: translateX(100%);
+      opacity: 1;
+      z-index: 2;
+    }
+
+    .form-container form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .form-container h2 {
+      margin-bottom: 20px;
+      color: var(--primary-blue);
+    }
+
+    .form-container input {
+      margin: 10px 0;
+      padding: 12px;
+      width: 80%;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-container input:focus {
+      border-color: var(--primary-blue);
+    }
+
+    .forgot-password {
+      margin-top: 10px;
+      color: var(--primary-blue);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
+    .submit-btn {
+      margin-top: 20px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 20px;
+      background: var(--primary-blue);
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: var(--primary-blue);
+    }
+
+    .overlay-container {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 50%;
+      height: 100%;
+      background: var(--primary-blue);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      transition: transform 0.6s ease-in-out;
+      text-align: center;
+    }
+
+    .modal-container.right-panel-active .overlay-container {
+      transform: translateX(-100%);
+    }
+
+    .overlay h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .overlay p {
+      font-size: 16px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .overlay button {
+      background: white;
+      color: var(--primary-blue);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .overlay button:hover {
+      background: #f0f0f0;
+    }
+
+    @media (max-width: 850px) {
+      .modal-container {
+        width: 90%;
+        height: 550px;
+      }
+    }
+
+      /* Main Container */
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 8rem 3rem 2rem;
+      }
+
+      /* Filters */
+      .filters {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .filter-row {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .filter-group {
+        flex: 1;
+        min-width: 200px;
+      }
+
+      .filter-label {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+        display: block;
+      }
+
+      .search-box {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        background: var(--bg-main);
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        color: var(--text-primary);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+      }
+
+      .search-box:focus {
+        outline: none;
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px var(--primary-light);
+      }
+
+      .filter-tags {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+      }
+
+      .filter-tag {
+        padding: 0.5rem 1rem;
+        background: var(--bg-main);
+        border: 2px solid var(--border);
+        border-radius: 20px;
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        user-select: none;
+      }
+
+      .filter-tag:hover {
+        border-color: var(--primary-blue);
+        color: var(--primary-blue);
+        transform: translateY(-2px);
+      }
+
+      .filter-tag.active {
+        background: var(--primary-blue);
+        color: white;
+        border-color: var(--primary-blue);
+      }
+
+      /* Section Headers */
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 3rem 0 1.5rem;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .section-count {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        background: var(--surface);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+      }
+
+      /* Algorithm List */
+      .algorithm-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .algorithm-item {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: grid;
+        grid-template-columns: 3rem 1fr auto;
+        gap: 1.5rem;
+        align-items: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+      }
+
+      .algorithm-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--primary-blue);
+        transform: translateX(-4px);
+        transition: transform 0.3s ease;
+      }
+
+      .algorithm-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        border-color: var(--primary-blue);
+      }
+
+      .algorithm-item:hover::before {
+        transform: translateX(0);
+      }
+
+      .algo-number {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-secondary);
+        opacity: 0.5;
+      }
+
+      .algo-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .algo-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .algo-category {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+
+      .algo-complexity {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        margin-top: 0.25rem;
+      }
+
+      .algo-action {
+        padding: 0.6rem 1.5rem;
+        background: var(--primary-blue);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .algo-action:hover {
+        background: var(--primary-dark);
+        transform: scale(1.05);
+      }
+
+      .no-results {
+        text-align: center;
+        padding: 3rem;
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+      }
+
+      /* Type Badge */
+      .type-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        background: var(--primary-light);
+        color: var(--primary-dark);
+        border-radius: 12px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-right: 0.5rem;
+      }
+
+      [data-theme="dark"] .type-badge {
+        background: var(--primary-dark);
+        color: var(--primary-light);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .container {
+          padding: 7rem 1.5rem 2rem;
+        }
+
+        .filter-row {
+          flex-direction: column;
+        }
+
+        .algorithm-item {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .algo-number {
+          display: none;
+        }
+
+        .section-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+        }
+      }
+
+      /* ===== MODERN FOOTER ===== */
+
+      .site-footer {
+        background: var(--surface);
+        padding: 3rem 2rem;
+        border-top: 1px solid var(--border);
+      }
+
+      .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 2fr 3fr;
+        gap: 3rem;
+      }
+
+      .footer-brand h2 {
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+      }
+
+      .footer-brand p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .footer-links {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+      }
+
+      .footer-links h4 {
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+      }
+
+      .footer-links a {
+        display: block;
+        color: var(--text-secondary);
+        text-decoration: none;
+        margin-bottom: 0.5rem;
+        transition: color 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: var(--primary-blue);
+      }
+
+      .auth-error {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #ef4444;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        animation: fadeIn 0.3s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">
+        <span>DSA Visualiser</span>
+      </div>
+
+      <div class="nav-links">
+        <a href="homepage.html" class="nav-item">Home</a>
+        <a href="dsa-algorithms-list.html" class="nav-item active">Explore</a>
+        <a href="#" class="nav-item">Demo</a>
+      </div>
+
+      <div class="nav-controls">
+        <button class="theme-toggle" id="themeToggle">
+          <img
+            width="22"
+            height="22"
+            src="assets/icons8-dark-mode-30.png"
+            alt="dark mode"
+          />
+      </div>
+
+      <div class="auth-buttons" id="authSection">
+          <button
+            class="signup-btn"
+            onclick="
+              openModal();
+              setTimeout(
+                () => document.getElementById('toggleBtn').click(),
+                100,
+              );
+            "
+          >
+            Sign Up
+          </button>
+          <button class="signin-btn" onclick="openModal()">Sign In</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container">
+      <!-- Filters -->
+      <div class="filters">
+        <div class="filter-row">
+          <div class="filter-group">
+            <label class="filter-label">Search</label>
+            <input
+              type="text"
+              class="search-box"
+              id="searchBox"
+              placeholder="Search algorithms or data structures..."
+            />
+          </div>
+        </div>
+        <div class="filter-row" style="margin-top: 1rem">
+          <div class="filter-group">
+            <label class="filter-label">Category</label>
+            <div class="filter-tags" id="categoryFilters">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+        <div class="filter-row" style="margin-top: 1rem">
+          <div class="filter-group">
+            <label class="filter-label">Type</label>
+            <div class="filter-tags" id="typeFilters">
+              <div class="filter-tag active" data-type="all">All</div>
+              <div class="filter-tag" data-type="algorithm">Algorithms</div>
+              <div class="filter-tag" data-type="data-structure">
+                Data Structures
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dynamic Content Container -->
+      <div id="contentContainer">
+        <!-- Sections will be dynamically generated here -->
+      </div>
+
+      <!-- No Results Message -->
+      <div id="noResults" class="no-results" style="display: none">
+        No algorithms or data structures found matching your search.
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-container">
+        <!-- Left brand section -->
+        <div class="footer-brand">
+          <h2>DSA Visualiser</h2>
+          <p>
+            Learn Data Structures & Algorithms through interactive, step-by-step
+            visualizations.
+          </p>
+        </div>
+
+        <!-- Footer links -->
+        <div class="footer-links">
+          <div>
+            <h4>Explore</h4>
+            <a href="#">Arrays</a>
+            <a href="#">Trees</a>
+            <a href="#">Graphs</a>
+            <a href="#">Dynamic Programming</a>
+          </div>
+
+          <div>
+            <h4>Resources</h4>
+            <a href="#">Documentation</a>
+            <a href="#">Visual Demos</a>
+            <a href="#">Tutorials</a>
+            <a href="#">Blog</a>
+          </div>
+
+          <div>
+            <h4>Company</h4>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Login/Register Modal -->
+    <div
+      class="modal-overlay"
+      id="modalOverlay"
+      onclick="closeModalOnOutsideClick(event)"
+    >
+      <div class="modal-container" id="modalContainer">
+        <button class="close-modal" onclick="closeModal()">&times;</button>
+
+        <div class="form-container sign-in-container">
+          <form onsubmit="handleSignIn(event)">
+            <h2>Sign In to DSA Visualiser</h2>
+            <input type="email" placeholder="Email" required />
+            <input type="password" placeholder="Password" required />
+            <a href="#" class="forgot-password">Forgot your password?</a>
+            <button type="submit" class="submit-btn">SIGN IN</button>
+          </form>
+        </div>
+
+        <div class="form-container sign-up-container">
+          <form onsubmit="handleSignUp(event)">
+            <h2>Create Account</h2>
+            <input type="text" placeholder="Name" required />
+            <input type="email" placeholder="Email" required />
+            <input type="password" placeholder="Password" required />
+            <button type="submit" class="submit-btn">SIGN UP</button>
+          </form>
+        </div>
+
+        <div class="overlay-container">
+          <div class="overlay">
+            <h1 id="panelTitle">Hello, Friend!</h1>
+            <p id="panelText">
+              Enter your personal details and start your journey with us
+            </p>
+            <button id="toggleBtn">SIGN UP</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="algorithms-data.js"></script>
+    <script>
+      // ============================================
+      // WAIT FOR DOM TO LOAD
+      // ============================================
+      document.addEventListener("DOMContentLoaded", function () {
+        // ============================================
+        // THEME TOGGLE
+        // ============================================
+        const themeToggle = document.getElementById("themeToggle");
+        const html = document.documentElement;
+
+        themeToggle.addEventListener("click", () => {
+          const currentTheme = html.getAttribute("data-theme");
+          const newTheme = currentTheme === "dark" ? "light" : "dark";
+          html.setAttribute("data-theme", newTheme);
+          themeToggle.innerHTML =
+            newTheme === "dark"
+              ? `<img width="22" height="22"
+        src="assets/icons8-light-mode-78.png"
+        alt="Light Mode"/>`
+              : `<img width="22" height="22"
+        src="assets/icons8-dark-mode-30.png"
+        alt="Dark Mode"/>`;
+        });
+
+        // ============================================
+        // MODAL CODE
+        // ============================================
+        const modalOverlay = document.getElementById("modalOverlay");
+        const modalContainer = document.getElementById("modalContainer");
+        const toggleBtn = document.getElementById("toggleBtn");
+        const panelTitle = document.getElementById("panelTitle");
+        const panelText = document.getElementById("panelText");
+
+        // Check if elements exist (but don't return - just log)
+        if (!modalOverlay || !modalContainer || !toggleBtn) {
+          console.error("Modal elements not found!");
+          // DON'T USE return HERE - it stops everything!
+        } else {
+          // Only setup modal if elements exist
+          toggleBtn.addEventListener("click", () => {
+            modalContainer.classList.toggle("right-panel-active");
+            const isSignUp =
+              modalContainer.classList.contains("right-panel-active");
+            toggleBtn.textContent = isSignUp ? "SIGN IN" : "SIGN UP";
+            panelTitle.textContent = isSignUp
+              ? "Welcome Back!"
+              : "Hello, Friend!";
+            panelText.textContent = isSignUp
+              ? "To keep connected with us please login with your info"
+              : "Enter your details and start your journey with us";
+          });
+        }
+
+        // ============================================
+        // GLOBAL MODAL FUNCTIONS
+        // ============================================
+        window.openModal = function () {
+          console.log("Opening modal...");
+          if (modalOverlay) {
+            modalOverlay.classList.add("active");
+            document.body.style.overflow = "hidden";
+          }
+        };
+
+        window.closeModal = function () {
+          if (modalOverlay && modalContainer) {
+            modalOverlay.classList.remove("active");
+            document.body.style.overflow = "auto";
+            modalContainer.classList.remove("right-panel-active");
+            if (toggleBtn) toggleBtn.textContent = "SIGN UP";
+            if (panelTitle) panelTitle.textContent = "Hello, Friend!";
+            if (panelText)
+              panelText.textContent =
+                "Enter your details and start your journey with us";
+          }
+        };
+
+        window.closeModalOnOutsideClick = function (event) {
+          if (event.target === modalOverlay) {
+            closeModal();
+          }
+        };
+
+        document.addEventListener("keydown", (e) => {
+          if (
+            e.key === "Escape" &&
+            modalOverlay &&
+            modalOverlay.classList.contains("active")
+          ) {
+            closeModal();
+          }
+        });
+
+        window.handleSignIn = async function (event) {
+          event.preventDefault();
+
+          const inputs = event.target.querySelectorAll("input");
+          const email = inputs[0].value;
+          const password = inputs[1].value;
+
+          const res = await fetch("http://localhost:5000/api/auth/signin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+          });
+
+          const data = await res.json();
+
+          if (data.token) {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("name", data.name);
+
+            updateNavbarUI();
+            closeModal();
+          }
+        };
+
+        window.handleSignUp = async function (event) {
+          event.preventDefault();
+
+          const inputs = event.target.querySelectorAll("input");
+          const name = inputs[0].value.trim();
+          const email = inputs[1].value.trim();
+          const password = inputs[2].value.trim();
+
+          try {
+            const res = await fetch("http://localhost:5000/api/auth/signup", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name, email, password })
+            });
+
+            const data = await res.json();
+
+            if (data.token) {
+              localStorage.setItem("token", data.token);
+              localStorage.setItem("name", data.name);
+
+              updateNavbarUI();
+              closeModal();
+            } else {
+              showAuthError(data.msg || "Signup failed");
+            }
+
+          } catch (err) {
+            showAuthError("Server error. Try again.");
+          }
+        };
+
+        function showAuthError(message) {
+          let errorDiv = document.querySelector(".auth-error");
+
+          if (!errorDiv) {
+            errorDiv = document.createElement("div");
+            errorDiv.className = "auth-error";
+            document.querySelector(".modal-container").appendChild(errorDiv);
+          }
+
+          errorDiv.textContent = message;
+
+          setTimeout(() => {
+            errorDiv.remove();
+          }, 3000);
+        }
+
+        // ============================================
+        // DATA ORGANIZATION
+        // ============================================
+
+        // Group data by category
+        function groupByCategory(data) {
+          const grouped = {};
+          Object.entries(data).forEach(([key, value]) => {
+            const category = value.category;
+            if (!grouped[category]) {
+              grouped[category] = [];
+            }
+            grouped[category].push({ key, ...value });
+          });
+          return grouped;
+        }
+
+        // Get all unique categories
+        function getCategories(data) {
+          const categories = new Set();
+          Object.values(data).forEach((item) => categories.add(item.category));
+          return Array.from(categories).sort();
+        }
+
+        // ============================================
+        // POPULATE CATEGORY FILTERS
+        // ============================================
+        function populateCategoryFilters() {
+          const categoryFilters = document.getElementById("categoryFilters");
+          const categories = getCategories(DSAData);
+
+          // Add "All" filter
+          const allFilter = document.createElement("div");
+          allFilter.className = "filter-tag active";
+          allFilter.textContent = "All";
+          allFilter.dataset.category = "all";
+          categoryFilters.appendChild(allFilter);
+
+          // Add category filters
+          categories.forEach((category) => {
+            const filter = document.createElement("div");
+            filter.className = "filter-tag";
+            filter.textContent = category;
+            filter.dataset.category = category;
+            categoryFilters.appendChild(filter);
+          });
+        }
+
+        // ============================================
+        // CREATE ALGORITHM ITEM
+        // ============================================
+        function createAlgorithmItem(key, data, index) {
+          const item = document.createElement("div");
+          item.className = "algorithm-item";
+          item.dataset.name = data.name.toLowerCase();
+          item.dataset.category = data.category;
+          item.dataset.type = data.type;
+
+          item.innerHTML = `
+            <div class="algo-number">${String(index + 1).padStart(2, "0")}</div>
+            <div class="algo-info">
+              <div>
+                <span class="type-badge">${data.type === "algorithm" ? "ALGO" : "DS"}</span>
+                <span class="algo-name">${data.name}</span>
+              </div>
+              <div class="algo-category">${data.category}</div>
+              <div class="algo-complexity">Time: ${data.timeComplexity} • Space: ${data.spaceComplexity}</div>
+            </div>
+            <button class="algo-action" onclick="goToVisualizer('${key}')">Visualize</button>
+          `;
+
+          return item;
+        }
+
+        // ============================================
+        // RENDER ALL CONTENT
+        // ============================================
+        function renderContent(
+          filterCategory = "all",
+          filterType = "all",
+          searchTerm = "",
+        ) {
+          const container = document.getElementById("contentContainer");
+          const noResults = document.getElementById("noResults");
+          container.innerHTML = "";
+
+          // Filter data
+          let filteredData = Object.entries(DSAData);
+
+          if (filterCategory !== "all") {
+            filteredData = filteredData.filter(
+              ([_, item]) => item.category === filterCategory,
+            );
+          }
+
+          if (filterType !== "all") {
+            filteredData = filteredData.filter(
+              ([_, item]) => item.type === filterType,
+            );
+          }
+
+          if (searchTerm) {
+            filteredData = filteredData.filter(
+              ([_, item]) =>
+                item.name.toLowerCase().includes(searchTerm) ||
+                item.description.toLowerCase().includes(searchTerm) ||
+                item.category.toLowerCase().includes(searchTerm),
+            );
+          }
+
+          // Check if no results
+          if (filteredData.length === 0) {
+            noResults.style.display = "block";
+            return;
+          } else {
+            noResults.style.display = "none";
+          }
+
+          // Group by category
+          const grouped = {};
+          filteredData.forEach(([key, value]) => {
+            const category = value.category;
+            if (!grouped[category]) {
+              grouped[category] = [];
+            }
+            grouped[category].push({ key, ...value });
+          });
+
+          // Render each category section
+          let globalIndex = 0;
+          Object.entries(grouped).forEach(([category, items]) => {
+            // Section header
+            const header = document.createElement("div");
+            header.className = "section-header";
+            header.innerHTML = `
+              <div class="section-title">${category}</div>
+              <div class="section-count">${items.length} ${items.length === 1 ? "item" : "items"}</div>
+            `;
+            container.appendChild(header);
+
+            // Algorithm list
+            const list = document.createElement("div");
+            list.className = "algorithm-list";
+
+            items.forEach((item) => {
+              list.appendChild(
+                createAlgorithmItem(item.key, item, globalIndex),
+              );
+              globalIndex++;
+            });
+
+            container.appendChild(list);
+          });
+        }
+
+        // ============================================
+        // NAVIGATION FUNCTION
+        // ============================================
+        window.goToVisualizer = function (algoKey) {
+          window.location.href = `Visualizer_render.html?algo=${algoKey}`;
+        };
+
+        // ============================================
+        // FILTER FUNCTIONALITY
+        // ============================================
+        let currentCategory = "all";
+        let currentType = "all";
+        let currentSearch = "";
+
+        // Category filter
+        document
+          .getElementById("categoryFilters")
+          .addEventListener("click", function (e) {
+            if (e.target.classList.contains("filter-tag")) {
+              // Remove active from all
+              this.querySelectorAll(".filter-tag").forEach((tag) =>
+                tag.classList.remove("active"),
+              );
+              // Add active to clicked
+              e.target.classList.add("active");
+              // Update filter
+              currentCategory = e.target.dataset.category;
+              renderContent(currentCategory, currentType, currentSearch);
+            }
+          });
+
+        // Type filter
+        document
+          .getElementById("typeFilters")
+          .addEventListener("click", function (e) {
+            if (e.target.classList.contains("filter-tag")) {
+              // Remove active from all
+              this.querySelectorAll(".filter-tag").forEach((tag) =>
+                tag.classList.remove("active"),
+              );
+              // Add active to clicked
+              e.target.classList.add("active");
+              // Update filter
+              currentType = e.target.dataset.type;
+              renderContent(currentCategory, currentType, currentSearch);
+            }
+          });
+
+        // Search
+        document
+          .getElementById("searchBox")
+          .addEventListener("input", function (e) {
+            currentSearch = e.target.value.toLowerCase();
+            renderContent(currentCategory, currentType, currentSearch);
+          });
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        populateCategoryFilters();
+        renderContent();
+
+        console.log(
+          `✅ Loaded ${Object.keys(DSAData).length} algorithms and data structures!`,
+        );
+
+        function updateNavbarUI() {
+          const authSection = document.getElementById("authSection");
+          if (!authSection) return;
+
+          const token = localStorage.getItem("token");
+          const name = localStorage.getItem("name");
+
+          // Smooth fade out
+          authSection.style.opacity = "0";
+
+          setTimeout(() => {
+            if (token && name) {
+              authSection.innerHTML = `
+                <div class="user-nav">
+                  <span class="user-greeting">👋 Hi, ${name}</span>
+                  <button class="signin-btn logout-btn">Logout</button>
+                </div>
+              `;
+
+              // Attach logout event cleanly (no inline onclick)
+              document
+                .querySelector(".logout-btn")
+                .addEventListener("click", logout);
+
+            } else {
+              authSection.innerHTML = `
+                <button class="signup-btn" id="signupBtn">Sign Up</button>
+                <button class="signin-btn" id="signinBtn">Sign In</button>
+              `;
+
+              // Reattach modal open handlers
+              document
+                .getElementById("signupBtn")
+                .addEventListener("click", () => {
+                  openModal();
+                  setTimeout(
+                    () => document.getElementById("toggleBtn").click(),
+                    100
+                  );
+                });
+
+              document
+                .getElementById("signinBtn")
+                .addEventListener("click", openModal);
+            }
+
+            // Fade back in
+            authSection.style.opacity = "1";
+          }, 150);
+        }
+        window.logout = function () {
+          localStorage.removeItem("token");
+          localStorage.removeItem("name");
+
+          updateNavbarUI();
+        };
+
+        updateNavbarUI();
+      }); // End DOMContentLoaded
+    </script>
+  </body>
+</html>

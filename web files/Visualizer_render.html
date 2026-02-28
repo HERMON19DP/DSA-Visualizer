@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algorithm Visualizer</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-blue: #2563eb;
+      --primary-dark: #1e40af;
+      --primary-light: #dbeafe;
+      --accent-hover: #3b82f6;
+      --bg-main: #ffffff;
+      --surface: #f8fafc;
+      --text-primary: #000000;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+    }
+
+    [data-theme="dark"] {
+      --primary-blue: #60a5fa;
+      --primary-dark: #93c5fd;
+      --primary-light: #1e3a8a;
+      --accent-hover: #93c5fd;
+      --bg-main: #0f172a;
+      --surface: #020617;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --border: #1e293b;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --error: #f87171;
+    }
+
+    body {
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+      background: var(--bg-main);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      transition:
+        background 0.3s ease,
+        color 0.3s ease;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      border-bottom: 2px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--primary-blue);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background: var(--primary-dark);
+      transform: translateX(-3px);
+    }
+
+    .algo-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg,
+          var(--primary-blue),
+          var(--primary-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 2px solid var(--border);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--primary-blue);
+      transform: scale(1.1);
+    }
+
+    /* Main Layout */
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1600px;
+      margin: 0 auto;
+      min-height: calc(100vh - 80px);
+    }
+
+    /* Left Panel - Visualization */
+    .visualization-panel {
+      background: var(--surface);
+      border-radius: 16px;
+      border: 2px solid var(--border);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .input-section {
+      background: var(--bg-main);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+    }
+
+    .input-section h3 {
+      margin-bottom: 1rem;
+      color: var(--primary-blue);
+    }
+
+    .input-group {
+      margin-bottom: 1rem;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--text-primary);
+      font-size: 1rem;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+    }
+
+    .start-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--primary-blue);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .start-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .start-btn:disabled {
+      background: var(--text-secondary);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Visualization Area */
+    .viz-area {
+      flex: 1;
+      background: var(--bg-main);
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      padding: 2rem;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .viz-placeholder {
+      text-align: center;
+      color: var(--text-secondary);
+    }
+
+    .viz-placeholder h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      gap: 0.6rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .control-btn {
+      padding: 0.6rem 1.2rem;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      color: var(--text-primary);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.88rem;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      white-space: nowrap;
+    }
+
+    .control-btn:hover:not(:disabled) {
+      border-color: var(--primary-blue);
+      color: var(--primary-blue);
+      transform: translateY(-2px);
+    }
+
+    .control-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .control-btn.btn-primary {
+      background: var(--primary-blue);
+      color: white;
+      border-color: var(--primary-blue);
+    }
+
+    .control-btn.btn-primary:hover:not(:disabled) {
+      background: var(--primary-dark);
+      border-color: var(--primary-dark);
+      color: white;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.35);
+    }
+
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-left: 0.25rem;
+      padding: 0.4rem 0.75rem;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .speed-control label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .speed-control input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 80px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .speed-control input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--primary-blue);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+
+    .speed-control input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .speed-control input[type=range]::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--primary-blue);
+      cursor: pointer;
+      border: none;
+    }
+
+    #speedLabel {
+      font-family: "Courier New", monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary-blue);
+      min-width: 24px;
+      text-align: right;
+    }
+
+    /* Right Panel - Info */
+    .info-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .info-card {
+      background: var(--surface);
+      border-radius: 16px;
+      border: 2px solid var(--border);
+      padding: 1.5rem;
+    }
+
+    .info-card h3 {
+      color: var(--primary-blue);
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .info-row {
+      display: flex;
+      flex-direction: column;
+      /* ← CHANGED: vertical layout */
+      gap: 0.5rem;
+      /* ← NEW: space between label and value */
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      /* ← NEW: smaller label */
+      text-transform: uppercase;
+      /* ← NEW: uppercase labels */
+      letter-spacing: 0.5px;
+      /* ← NEW: better readability */
+    }
+
+    .info-value {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-family: "Courier New", monospace;
+      font-size: 0.95rem;
+      /* ← NEW: slightly smaller */
+      line-height: 1.6;
+      /* ← NEW: better spacing */
+      word-wrap: break-word;
+      /* ← NEW: wrap long words */
+      overflow-wrap: break-word;
+      /* ← NEW: wrap overflow */
+    }
+
+    /* NEW: Badge styling for complexity */
+    .complexity-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border-radius: 6px;
+      font-family: "Courier New", monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-right: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    [data-theme="dark"] .complexity-badge {
+      background: var(--primary-dark);
+      color: var(--bg-main);
+    }
+
+    /* NEW: Better text for use cases */
+    .use-cases-text {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-primary);
+    }
+
+    /* NEW: Category badge */
+    .category-badge {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      background: var(--surface);
+      border: 2px solid var(--primary-blue);
+      color: var(--primary-blue);
+      border-radius: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* NEW: Developer name styling */
+    .developer-name {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* NEW: Year styling */
+    .year-value {
+      font-family: "Courier New", monospace;
+      font-weight: 700;
+      color: var(--primary-blue);
+    }
+
+    .description {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .pseudocode {
+      background: var(--bg-main);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: "Courier New", monospace;
+      font-size: 0.9rem;
+      line-height: 1.8;
+      overflow-x: auto;
+    }
+
+    .pseudocode-line {
+      color: var(--text-primary);
+      padding: 0.2rem 0;
+    }
+
+    .pseudocode-line.active {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding-left: 0.5rem;
+      margin-left: -0.5rem;
+      font-weight: 700;
+    }
+
+    .step-indicator {
+      background: var(--bg-main);
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+      color: var(--primary-blue);
+    }
+
+    /* Visualization Elements */
+    .array-container {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .array-element {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .array-element.comparing {
+      background: var(--warning);
+      border-color: var(--warning);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .array-element.sorted {
+      background: var(--success);
+      border-color: var(--success);
+      color: white;
+    }
+
+    .array-element.current {
+      background: var(--primary-blue);
+      border-color: var(--primary-blue);
+      color: white;
+      transform: scale(1.15);
+    }
+
+
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+
+      .info-panel {
+        order: -1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .algo-title {
+        font-size: 1.3rem;
+      }
+
+      .container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="header">
+    <a href="dsa-algorithms-list_auto.html" class="back-btn"> ← Back </a>
+    <h1 class="algo-title" id="algoTitle">Algorithm Visualizer</h1>
+    <div class="nav-controls">
+      <button class="theme-toggle" id="themeToggle">
+        <img width="22" height="22" src="assets/icons8-dark-mode-30.png" alt="dark mode" />
+      </button>
+  </header>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Left Panel - Visualization -->
+    <div class="visualization-panel">
+      <!-- Input Section -->
+      <div class="input-section">
+        <h3>Input Configuration</h3>
+        <div id="inputFields"></div>
+        <button class="start-btn" id="startBtn">Start Visualization</button>
+      </div>
+
+      <!-- Visualization Area -->
+      <div class="viz-area" id="vizArea">
+        <div class="viz-placeholder">
+          <h3>Ready to visualize</h3>
+          <p>Configure inputs above and click "Start Visualization"</p>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls" id="controls" style="display: none">
+        <button class="control-btn btn-primary" id="startRestartBtn">↺ Restart</button>
+        <button class="control-btn" id="prevBtn" disabled>◀ Prev</button>
+        <button class="control-btn" id="stepBtn" disabled>Next ▶</button>
+        <button class="control-btn" id="autoBtn" disabled>⏯ Auto</button>
+        <button class="control-btn" id="resetBtn">↺ Reset</button>
+        <div class="speed-control">
+          <label for="speedSlider">Speed</label>
+          <input type="range" id="speedSlider" min="200" max="2000" step="100" value="900"/>
+          <span id="speedLabel">1x</span>
+        </div>
+      </div>
+
+      <!-- Step Indicator -->
+      <div class="step-indicator" id="stepIndicator" style="display: none">
+        Step 1 of 1
+      </div>
+    </div>
+
+    <!-- Right Panel - Info -->
+    <div class="info-panel">
+      <!-- Basic Info -->
+      <div class="info-card">
+        <h3>Algorithm Information</h3>
+        <div class="info-row">
+          <span class="info-label">Category:</span>
+          <span class="info-value" id="category">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Time Complexity:</span>
+          <span class="info-value" id="timeComplexity">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Space Complexity:</span>
+          <span class="info-value" id="spaceComplexity">-</span>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="info-card">
+        <h3>Description</h3>
+        <p class="description" id="description">-</p>
+      </div>
+
+      <!-- Historical Info -->
+      <div class="info-card">
+        <h3>Historical Context</h3>
+        <div class="info-row">
+          <span class="info-label">Developer:</span>
+          <span class="info-value" id="developer">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Year:</span>
+          <span class="info-value" id="year">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Use Cases:</span>
+          <span class="info-value" id="useCases" style="font-size: 0.85rem">-</span>
+        </div>
+      </div>
+
+      <!-- Pseudocode -->
+      <div class="info-card">
+        <h3>Pseudocode</h3>
+        <div class="pseudocode" id="pseudocode">
+          <!-- Will be populated dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data + Router (router loads the algo plugin automatically) -->
+  <script src="algorithms-data.js"></script>
+  <script src="router.js"></script>
+
+  <script>
+    // ============================================
+    // AUTH STATE MANAGER
+    // ============================================
+    const Auth = {
+      _accessToken: null,
+
+      setToken(token) {
+        this._accessToken = token;
+      },
+
+      getToken() {
+        return this._accessToken;
+      },
+
+      clearToken() {
+        this._accessToken = null;
+      },
+
+      // Attach token to fetch requests
+      async authFetch(url, options = {}) {
+        if (!options.headers) options.headers = {};
+        if (this._accessToken) {
+          options.headers['Authorization'] = `Bearer ${this._accessToken}`;
+        }
+        options.credentials = 'include'; // always send cookies
+
+        let response = await fetch(url, options);
+
+        // If access token expired, try to refresh silently
+        if (response.status === 401) {
+          const data = await response.clone().json().catch(() => ({}));
+          if (data.code === 'TOKEN_EXPIRED') {
+            const refreshed = await this.refreshToken();
+            if (refreshed) {
+              options.headers['Authorization'] = `Bearer ${this._accessToken}`;
+              response = await fetch(url, options); // retry original request
+            }
+          }
+        }
+
+        return response;
+      },
+
+      async refreshToken() {
+        try {
+          const res = await fetch('http://localhost:5000/api/auth/refresh', {
+            method: 'POST',
+            credentials: 'include'
+          });
+          if (res.ok) {
+            const data = await res.json();
+            this.setToken(data.accessToken);
+            return true;
+          }
+        } catch (e) { }
+        this.clearToken();
+        return false;
+      }
+    };
+
+    // Page population + routing handled by router.js
+
+    // Pseudocode population handled by router.js
+
+    // Input field generation handled by router.js
+
+    // formatComplexity moved to router.js
+
+    // ============================================
+    // THEME TOGGLE
+    // ============================================
+    const themeToggle = document.getElementById("themeToggle");
+    const html = document.documentElement;
+
+    themeToggle.addEventListener("click", () => {
+      const currentTheme = html.getAttribute("data-theme");
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+      html.setAttribute("data-theme", newTheme);
+      themeToggle.innerHTML =
+        newTheme === "dark"
+          ? `<img width="22" height="22"
+        src="assets/icons8-light-mode-78.png"
+        alt="Light Mode"/>`
+          : `<img width="22" height="22"
+        src="assets/icons8-dark-mode-30.png"
+        alt="Dark Mode"/>`;
+    });
+
+    // ============================================
+    // VISUALIZATION LOGIC
+    // ============================================
+    // visualizationState lives in router.js
+
+    // Controls wired by router.js
+
+
+    // ── All visualization control functions live in router.js ──
+
+        // Show a toast-style message above or inside the modal
+    function showAuthMessage(message, type = 'info') {
+      // Remove any existing message
+      const existing = document.getElementById('authMessage');
+      if (existing) existing.remove();
+
+      const colors = {
+        success: '#10b981',
+        error: '#ef4444',
+        warning: '#f59e0b',
+        info: '#2563eb'
+      };
+
+      const msg = document.createElement('div');
+      msg.id = 'authMessage';
+      msg.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: ${colors[type] || colors.info};
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            z-index: 99999;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            animation: slideDown 0.3s ease;
+            max-width: 90vw;
+            text-align: center;
+          `;
+      msg.textContent = message;
+
+      // Add animation keyframe if not already present
+      if (!document.getElementById('authMsgStyle')) {
+        const style = document.createElement('style');
+        style.id = 'authMsgStyle';
+        style.textContent = `
+              @keyframes slideDown {
+                from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+                to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+              }
+            `;
+        document.head.appendChild(style);
+      }
+
+      document.body.appendChild(msg);
+      setTimeout(() => msg.remove(), 4000);
+    }
+
+    // Update the navbar sign-in/sign-up buttons to show user info after login
+    function updateNavForLoggedInUser(user) {
+      const authButtons = document.querySelector('.auth-buttons');
+      if (!authButtons) return;
+
+      authButtons.innerHTML = `
+            <span style="
+              color: var(--text-secondary);
+              font-size: 0.9rem;
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+            ">
+              <span style="
+                width: 32px; height: 32px;
+                background: var(--primary-blue);
+                border-radius: 50%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-weight: 700;
+                font-size: 0.85rem;
+              ">${user.name.charAt(0).toUpperCase()}</span>
+              ${user.name}
+              <span style="
+                background: var(--primary-light);
+                color: var(--primary-blue);
+                padding: 2px 8px;
+                border-radius: 10px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                text-transform: uppercase;
+              ">${user.role}</span>
+            </span>
+            <button
+              onclick="handleSignOut()"
+              style="
+                padding: 0.5rem 1rem;
+                border-radius: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                font-size: 0.9rem;
+                background: transparent;
+                color: var(--text-secondary);
+                border: 1px solid var(--border);
+                transition: all 0.3s ease;
+              "
+              onmouseover="this.style.borderColor='var(--primary-blue)'; this.style.color='var(--primary-blue)'"
+              onmouseout="this.style.borderColor='var(--border)'; this.style.color='var(--text-secondary)'"
+            >
+              Sign Out
+            </button>
+          `;
+    }
+
+    // Sign out handler
+    window.handleSignOut = async function () {
+      try {
+        await fetch('http://localhost:5000/api/auth/signout', {
+          method: 'POST',
+          credentials: 'include'
+        });
+      } catch (e) {
+        // Even if the request fails, clear local state
+      }
+      Auth.clearToken();
+
+      // Restore original sign in / sign up buttons
+      const authButtons = document.querySelector('.auth-buttons');
+      if (authButtons) {
+        authButtons.innerHTML = `
+              <button class="signup-btn" onclick="openModal(); setTimeout(() => document.getElementById('toggleBtn').click(), 100);">Sign Up</button>
+              <button class="signin-btn" onclick="openModal()">Sign In</button>
+            `;
+      }
+      showAuthMessage('Signed out successfully.', 'info');
+    };
+
+    // On page load, try to silently restore session using the refresh token cookie
+    (async function tryRestoreSession() {
+      const restored = await Auth.refreshToken();
+      if (restored) {
+        try {
+          const res = await Auth.authFetch('http://localhost:5000/api/auth/me');
+          if (res.ok) {
+            const data = await res.json();
+            updateNavForLoggedInUser(data.user);
+          }
+        } catch (e) { }
+      }
+    })();
+  </script>
+</body>
+
+</html>
